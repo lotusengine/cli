@@ -1,0 +1,10 @@
+#!/bin/sh
+':' //# comment; exec /usr/bin/env node -r tsconfig-paths/register "$0" "$@"
+
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
+require('dotenv-flow').config();
+require('@oclif/command')
+  .run()
+  .then(require('@oclif/command/flush'))
+  .catch(require('@oclif/errors/handle'))
