@@ -133,7 +133,7 @@ const doListen = async (params: RequestTokenParams): Promise<WebSocket> => {
             const { url } = message.params
             ux.info(`Opening browser to ${url}`)
             const app = await open(url, {
-              app: { name: browser! },
+              app: { name: browser },
               wait: false
             })
             app.on('error', (_) => {
@@ -164,7 +164,7 @@ const doListen = async (params: RequestTokenParams): Promise<WebSocket> => {
 }
 
 // Open a web socket connection
-const getConnection = async (): Promise<WebSocket> | never => {
+const getConnection = async (): Promise<WebSocket> => {
   if (ws) return ws
 
   return new Promise((resolve, reject) => {
@@ -174,7 +174,9 @@ const getConnection = async (): Promise<WebSocket> | never => {
       ws = connection
       resolve(ws)
     })
-    connection.on('close', () => {})
+    connection.on('close', () => {
+      // noop
+    })
     connection.on('error', (e) => {
       reject(e)
     })

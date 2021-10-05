@@ -2,8 +2,8 @@ import { flags } from '@oclif/command'
 import { OutputFlags } from '@oclif/parser'
 import chalk from 'chalk'
 import ux from 'cli-ux'
-import BaseCommand from '../../base'
-import { createModule } from '../../lib/apis/module'
+import BaseCommand from 'src/lib/base'
+import { createModule } from 'src/lib/services/module'
 
 export default class ModuleCreate extends BaseCommand {
   static description = 'create a new module'

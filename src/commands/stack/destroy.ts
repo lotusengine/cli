@@ -1,5 +1,5 @@
 import { Command, flags } from '@oclif/command'
-import BaseCommand from '../../base'
+import BaseCommand from 'src/lib/base'
 
 //import Command from '../base'
 

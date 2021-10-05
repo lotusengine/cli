@@ -1,41 +1,10 @@
-// Currently oclif does not extend or use most options such as paths etc.. 
 {
-  "extends": "@tsconfig/node14/tsconfig.json",
-  "compilerOptions": {   
-    "target": "ES2018",
-    "module": "commonjs",
-    "lib": ["es2018"],
-    "declaration": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "alwaysStrict": true,
-    //importsNotUsedAsValues
-    "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "noImplicitThis": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noEmit": true,
-    "noFallthroughCasesInSwitch": false,
-    "inlineSourceMap": true,
-    "inlineSources": true,
-    "experimentalDecorators": true,
-    "strictPropertyInitialization": false,
-    // "typeRoots": ["./node_modules/@types"]
+  // oclif builds its own tsconfig so we cannot extend - only a few options available
+  "compilerOptions": {
     "resolveJsonModule": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "paths": {  
-     // "lib/*": ["src/lib/*"]
-    },
-    "typeRoots": [
-      "node_modules/@types",
-      "typings"
-      //"node_modules/graphql/type/schema.d.ts",
-    ],
-
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   }
 }

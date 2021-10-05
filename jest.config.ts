@@ -1,4 +1,6 @@
 export default {
+  name: '@lotusengine/cli',
+  displayName: 'CLI',
   testEnvironment: 'jest-environment-node',
   // globalSetup: './test/setup.ts',
   // setupFilesAfterEnv: ['./test/bootstrap.ts'],

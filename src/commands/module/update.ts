@@ -1,6 +1,6 @@
 import { flags } from '@oclif/command'
 import { OutputFlags } from '@oclif/parser'
-import BaseCommand from '../../base'
+import BaseCommand from 'src/lib/base'
 
 export default class ModuleUpdate extends BaseCommand {
   static description = 'update a module'

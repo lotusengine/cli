@@ -1,8 +1,3 @@
-// @ts-expect-error ts-migrate(7016) FIXME: Try `npm install @types/bytes` if it exists or add... Remove this comment to see the full error message
-import bytes from 'bytes'
-// import { Response } from 'node-fetch'
-// import LotusError from './lotus-error'
-
 class LotusError extends Error {
   code: any
   meta: any
@@ -30,6 +25,16 @@ class CantReadDirError extends LotusError {
       code: 'CANT_READ_DIR_ERROR',
       meta: { dir },
       message: "Can't read directory"
+    })
+  }
+}
+
+class NonEmptyDirError extends LotusError {
+  constructor(dir: any) {
+    super({
+      code: 'NON_EMPTY_DIR_ERROR',
+      meta: { dir },
+      message: 'Directory is not empty'
     })
   }
 }
@@ -154,19 +159,64 @@ class ElasticError extends LotusError {
   }
 }
 
+class MissingConfigError extends LotusError {
+  constructor() {
+    super({
+      code: 'MISSING_CONFIG_ERROR',
+      meta: {},
+      message: 'Unable to find config file.'
+    })
+  }
+}
+
+class MissingAppError extends LotusError {
+  constructor() {
+    super({
+      code: 'MISSING_APP_ERROR',
+      meta: {},
+      message: 'No app executable defined in configuration.'
+    })
+  }
+}
+
+class ExecuteAppError extends LotusError {
+  constructor() {
+    super({
+      code: 'EXECUTE_APP_ERROR',
+      meta: {},
+      message: 'An error occurred while executing the stack app.'
+    })
+  }
+}
+
+class InvalidJsonError extends LotusError {
+  constructor() {
+    super({
+      code: 'INVALID_JSON_ERROR',
+      meta: {},
+      message: 'Invalid JSON data.'
+    })
+  }
+}
+
 export {
-  ElasticError,
-  ElasticIndexCreateError,
-  ElasticIndexBadMappingError,
-  ElasticInvalidTemplateError,
-  ElasticIndexExistsError,
-  CantReadDirError,
-  GraphQLAPIError,
-  CantParseJSONFileError,
-  CantParseYAMLFileError,
+  InvalidJsonError,
   CantFindFileError,
   CantLoadModule,
-  StreamNotFoundError,
+  CantParseJSONFileError,
+  CantParseYAMLFileError,
+  CantReadDirError,
   CollectionNotFoundError,
+  ElasticError,
+  ElasticIndexBadMappingError,
+  ElasticIndexCreateError,
+  ElasticIndexExistsError,
+  ElasticInvalidTemplateError,
+  ExecuteAppError,
+  GraphQLAPIError,
+  MissingAppError,
+  MissingConfigError,
+  NonEmptyDirError,
+  StreamNotFoundError,
   WorkflowNotFoundError
 }

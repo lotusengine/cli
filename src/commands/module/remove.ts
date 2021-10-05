@@ -1,9 +1,11 @@
 import { flags } from '@oclif/command'
 import { OutputFlags } from '@oclif/parser'
-import BaseCommand from '../../base'
+import BaseCommand from 'src/lib/base'
 
 export default class ModuleRemove extends BaseCommand {
   static description = 'delete a module'
+
+  static aliases = ['module:rm']
 
   static flags = {
     ...BaseCommand.flags,

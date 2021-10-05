@@ -1,9 +1,9 @@
 import { flags } from '@oclif/command'
 import { OutputFlags } from '@oclif/parser'
 import { ux } from 'cli-ux'
-import BaseCommand from '../../base'
-import { findUser } from '../../lib/apis/user'
-import { bool, date, header, label, param } from '../../lib/styles'
+import BaseCommand from 'src/lib/base'
+import { findUser } from 'src/lib/services/user'
+import { bool, date, header, label, param } from 'src/lib/styles'
 
 export default class UserView extends BaseCommand {
   static description = 'view user details'

@@ -1,24 +1,39 @@
-import { flags } from '@oclif/command'
-import { OutputFlags } from '@oclif/parser'
-import BaseCommand from '../../base'
+import ux from 'src/lib/ux'
+import BaseCommand from 'src/lib/base'
+import { listServices } from 'src/lib/services/service'
+import plural from 'pluralize'
 
 export default class ServiceList extends BaseCommand {
   static description = 'list available services'
 
+  static aliases = ['service:ls']
+
   static flags = {
-    ...BaseCommand.flags,
-    id: flags.string({
-      description: 'workflow ID'
-    })
+    ...BaseCommand.flags
   }
 
   async run(): Promise<void> {
-    // const flags = this.parsedFlags as OutputFlags<typeof AccountList.flags>
 
-    try {
-      console.log('not done')
-    } catch (e) {
-      console.log(e)
+    ux.action.start(`Fetching services`)
+
+    const services = await listServices()
+
+    ux.info(`${plural('service', services.length, true)} found`)
+
+    if (services.length) {
+      ux.table(services, {
+        id: {
+          header: 'ID'
+        },
+        label: {
+          header: 'Label'
+        },
+        createdAt: {
+          header: 'Created At'
+        }
+      })
     }
+
+    ux.action.stop()
   }
 }

@@ -1,7 +1,7 @@
 import { flags } from '@oclif/command'
 import { OutputFlags } from '@oclif/parser'
-import BaseCommand from '../../base'
-import { requestToken } from '../../lib/auth'
+import BaseCommand from 'src/lib/base'
+import { requestToken } from 'src/lib/auth'
 
 export default class AuthLogin extends BaseCommand {
   static description = 'login with your LotusEngine credentials'

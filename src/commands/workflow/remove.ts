@@ -1,9 +1,13 @@
 import { flags } from '@oclif/command'
 import { OutputFlags } from '@oclif/parser'
-import BaseCommand from '../../base'
+import { deleteWorkflow } from 'src/lib/services/workflow'
+import BaseCommand from 'src/lib/base'
+import ux from 'src/lib/ux'
 
 export default class WorkflowRemove extends BaseCommand {
-  static description = 'remove a workflow'
+  static description = 'delete a workflow'
+
+  static aliases = ['workflow:rm']
 
   static flags = {
     ...BaseCommand.flags,
@@ -16,10 +20,8 @@ export default class WorkflowRemove extends BaseCommand {
   async run(): Promise<void> {
     const flags = this.parsedFlags as OutputFlags<typeof WorkflowRemove.flags>
 
-    try {
-      console.log('not done')
-    } catch (e) {
-      console.log(e)
-    }
+    await deleteWorkflow(flags.id)
+
+    ux.success(`workflow ${flags.id} deleted`)
   }
 }

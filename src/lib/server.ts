@@ -1,5 +1,5 @@
 import http from 'http'
-// import { requireModule } from '../../../lib/file'
+// import { requireModule } from '../src/lib/file'
 
 export const serveModule = (path: any, port: any) => {
   const m = require(path)
@@ -19,7 +19,7 @@ export const serveModule = (path: any, port: any) => {
 
   server.on('request', async (req, res) => {
     if (req.method === 'POST') {
-      var body = ''
+      let body = ''
       req.on('data', (chunk: any) => {
         body += chunk
       })

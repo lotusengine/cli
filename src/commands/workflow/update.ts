@@ -1,9 +1,11 @@
 import { flags } from '@oclif/command'
 import { OutputFlags } from '@oclif/parser'
-import BaseCommand from '../../base'
+import ux from 'src/lib/ux'
+import BaseCommand from 'src/lib/base'
+import { updateWorkflow } from 'src/lib/services/workflow'
 
-export default class WorkflowVUpdate extends BaseCommand {
-  static description = 'udpate a workflow'
+export default class WorkflowCreate extends BaseCommand {
+  static description = 'update a workflow'
 
   static flags = {
     ...BaseCommand.flags,
@@ -15,20 +17,23 @@ export default class WorkflowVUpdate extends BaseCommand {
       description: 'workflow label'
     }),
     summary: flags.string({
-      description: 'workflow summary'
+      description: 'workflow short summary'
     }),
     definition: flags.string({
-      description: 'JSON schema definition (inline or file path)'
+      description: 'workflow definition as JSON string'
     })
   }
 
   async run(): Promise<void> {
-    const flags = this.parsedFlags as OutputFlags<typeof WorkflowVUpdate.flags>
+    const flags = this.parsedFlags as OutputFlags<typeof WorkflowCreate.flags>
 
-    try {
-      console.log('not done')
-    } catch (e) {
-      console.log(e)
-    }
+    await updateWorkflow({
+      id: flags.id,
+      label: flags.label,
+      summary: flags.summary,
+      definition: flags.definition
+    })
+
+    ux.success(`workflow ${flags.id} updated`)
   }
 }

@@ -2,7 +2,6 @@ import chalk, { gray, yellow, cyan, red } from 'chalk'
 import ms from 'ms'
 import { format } from 'date-fns'
 import ansiEscapes from 'ansi-escapes'
-import stringifyObject from 'stringify-object'
 import ww from 'word-wrap'
 
 const chars = {
@@ -116,18 +115,18 @@ export const json = (data: any, indent: any) => {
 
   if (!data || data === {}) return `${' '.repeat(indent)}...\n`
 
-  return stringifyObject(
-    data,
-    {
-      maxDepth: 5,
-      noSeparator: true,
-      colors: {
-        keys: 'cyan',
-        stringColor: 'green'
-      }
-    },
-    indent || 0
-  )
+  // return stringifyObject(
+  //   data,
+  //   {
+  //     maxDepth: 5,
+  //     noSeparator: true,
+  //     colors: {
+  //       keys: 'cyan',
+  //       stringColor: 'green'
+  //     }
+  //   },
+  //   indent || 0
+  // )
 }
 
 export const label = (txt: any, value: any) =>
@@ -168,7 +167,10 @@ export const rpad = (string: any, n = 0) => {
  * Starts a timer and return a function that when called returns a string
  * with the ellapsed time formatted.
  */
-export const stamp = (start = Date.now()) => () => elapsed(Date.now() - start)
+export const stamp =
+  (start = Date.now()) =>
+  () =>
+    elapsed(Date.now() - start)
 
 const printLine = (data: any, sizes: any) =>
   data.reduce(
@@ -188,7 +190,7 @@ export const table = (headers = [], entries = [], indent = 4, margin = 2) => {
           const colSize = (col && col.length) || 0
           return Math.max(currentMaxColSize, colSize)
         }),
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'length' does not exist on type 'never'.
+
       headers.map((col) => col.length)
     )
 
