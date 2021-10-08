@@ -12,7 +12,7 @@ export const findWorkflow = async (id: UUID): Promise<WorkflowModel> => {
       } 
       label
       summary
-      definition      
+      settings      
       createdAt
       updatedAt
     }
@@ -21,13 +21,13 @@ export const findWorkflow = async (id: UUID): Promise<WorkflowModel> => {
   const res = await doQuery<{ workflow: WorkflowModel }>(query, { id })
   if (!res) throw new Error('Missing')
 
-  const { service, definition, label, createdAt, updatedAt } = parseFields<{
+  const { service, settings, label, createdAt, updatedAt } = parseFields<{
     service: {
       id: UUID
-    }, definition: WorkflowDefinition, label: string, createdAt: ISO8601DateTime, updatedAt: ISO8601DateTime
-  }>(res.workflow, ['definition'])
+    }, settings: WorkflowDefinition, label: string, createdAt: ISO8601DateTime, updatedAt: ISO8601DateTime
+  }>(res.workflow, ['settings'])
 
-  return { id, createdAt, updatedAt, serviceId: service.id, label, definition }
+  return { id, createdAt, updatedAt, serviceId: service.id, label, settings }
 }
 
 // Delete a workflow by ID
@@ -101,7 +101,7 @@ export const listWorkflows = async (): Promise<Partial<WorkflowModel>[]> => {
 
   const res = await doQuery<{ workflows: { nodes: WorkflowModel[] } }>(query)
 
-  return res.workflows.nodes.map(workflow => parseFields<{ id: UUID, label: string, createdAt: ISO8601DateTime }>(workflow, ['definition']))
+  return res.workflows.nodes.map(workflow => parseFields<{ id: UUID, label: string, createdAt: ISO8601DateTime }>(workflow, ['settings']))
 }
 
 // Trigger a workflow

@@ -1,7 +1,13 @@
 import { doMutation, doQuery, parseFields, removeEmpty } from 'src/lib/query'
 import { parseJson } from 'src/lib/json'
 import { ISO8601DateTime, UUID } from 'src/types/common'
-import { ServiceModel, ServiceDefinition, ServiceSettings, ServiceUpdateInput, ServiceCreateInput } from 'src/types/service'
+import {
+  ServiceModel,
+  ServiceDefinition,
+  ServiceSettings,
+  ServiceUpdateInput,
+  ServiceCreateInput
+} from 'src/types/service'
 import { IOptionFlag } from '@oclif/command/lib/flags'
 import { LogType, LogModel } from 'src/types/log'
 import { ActionResponseResult, ActionType } from 'src/types/action'
@@ -15,8 +21,8 @@ export const findService = async (id: UUID): Promise<ServiceModel> => {
       summary
       description
       domain
+      parameters
       settings
-      definition
       createdAt
       updatedAt
     }
@@ -26,10 +32,40 @@ export const findService = async (id: UUID): Promise<ServiceModel> => {
   if (!res) throw new Error('Missing')
 
   const {
-    label, summary, description, definition, settings, createdAt, updatedAt, domain } = res.service
+    label,
+    summary,
+    description,
+    settings,
+    parameters,
+    createdAt,
+    updatedAt,
+    domain
+  } = res.service
 
-
-  return parseFields<{ id: UUID, createdAt: ISO8601DateTime, updatedAt: ISO8601DateTime, label: string, summary: string, domain: string, description: string, definition: ServiceDefinition, settings: ServiceSettings }>({ id, createdAt, updatedAt, label, summary, domain, description, definition, settings }, ['definition', 'settings'])
+  return parseFields<{
+    id: UUID
+    createdAt: ISO8601DateTime
+    updatedAt: ISO8601DateTime
+    label: string
+    summary: string
+    domain: string
+    description: string
+    settings: ServiceDefinition
+    parameters: ServiceSettings
+  }>(
+    {
+      id,
+      createdAt,
+      updatedAt,
+      label,
+      summary,
+      domain,
+      description,
+      settings,
+      parameters
+    },
+    ['settings', 'parameters']
+  )
 }
 
 // Delete a service by ID
@@ -45,7 +81,6 @@ export const deleteService = async (id: UUID): Promise<void> => {
 
 // Validate a service
 export const validateService = async (params: ServiceCreateInput) => {
-
   const query = `mutation ValidateService($input: ValidateServiceInput!) {
       validateService(input: $input) {
         id
@@ -61,7 +96,6 @@ export const validateService = async (params: ServiceCreateInput) => {
 
 // Update a service
 export const updateService = async (params: ServiceUpdateInput) => {
-
   const query = `mutation UpdateService($input: UpdateServiceInput!) {
       updateService(input: $input) {
         id
@@ -71,7 +105,6 @@ export const updateService = async (params: ServiceUpdateInput) => {
   await doMutation(query, {
     input: removeEmpty(params)
   })
-
 }
 
 // Create a new service
@@ -103,30 +136,23 @@ export const listServices = async (): Promise<Partial<ServiceModel>[]> => {
 
   const res = await doQuery<{ services: { nodes: ServiceModel[] } }>(query)
 
-  return res.services.nodes.map(({ id, label, createdAt }) => ({ id, label, createdAt } as ServiceModel))
+  return res.services.nodes.map(
+    ({ id, label, createdAt }) => ({ id, label, createdAt } as ServiceModel)
+  )
 }
 
 // Fetch service logs
 export const fetchLogs = async (params: {
-  id: IOptionFlag<string | undefined>,
-  workflowId: IOptionFlag<string | undefined>,
-  processId: IOptionFlag<string | undefined>,
-  status: IOptionFlag<string | undefined>,
-  term: IOptionFlag<string | undefined>,
-  scope: IOptionFlag<string | undefined>,
-  until: IOptionFlag<string | undefined>,
-  from: IOptionFlag<string | undefined>,
+  id: IOptionFlag<string | undefined>
+  workflowId: IOptionFlag<string | undefined>
+  processId: IOptionFlag<string | undefined>
+  status: IOptionFlag<string | undefined>
+  term: IOptionFlag<string | undefined>
+  scope: IOptionFlag<string | undefined>
+  until: IOptionFlag<string | undefined>
+  from: IOptionFlag<string | undefined>
 }): Promise<LogModel[]> => {
-
-  const {
-    id,
-    processId,
-    status,
-    term,
-    scope,
-    until,
-    from
-  } = params
+  const { id, processId, status, term, scope, until, from } = params
 
   const query = `query logs($filter: LogFilter, $search: LogSearch, $serviceId: ID) {
   logs(filter: $filter, search: $search, serviceId: $serviceId) {
@@ -154,7 +180,7 @@ export const fetchLogs = async (params: {
     search: removeEmpty({
       query: term,
       scope
-    }),
+    })
   }
   const res = await doQuery<{
     logs: {
@@ -162,8 +188,35 @@ export const fetchLogs = async (params: {
     }
   }>(query, variables)
 
-  return res.logs.nodes.map(log => {
-    const { id, name, processId, result, status, triggeredAt, type, workflowId } = log
-    return { id, triggeredAt, processId, workflowId, name, type, status, result: parseJson<{ id: UUID, processId: UUID, workflowId: UUID, name: string, type: ActionType, result: ActionResponseResult, label: string, triggeredAt: ISO8601DateTime }>(result) }
+  return res.logs.nodes.map((log) => {
+    const {
+      id,
+      name,
+      processId,
+      result,
+      status,
+      triggeredAt,
+      type,
+      workflowId
+    } = log
+    return {
+      id,
+      triggeredAt,
+      processId,
+      workflowId,
+      name,
+      type,
+      status,
+      result: parseJson<{
+        id: UUID
+        processId: UUID
+        workflowId: UUID
+        name: string
+        type: ActionType
+        result: ActionResponseResult
+        label: string
+        triggeredAt: ISO8601DateTime
+      }>(result)
+    }
   })
 }

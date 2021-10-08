@@ -22,11 +22,11 @@ export default class ServiceCreate extends BaseCommand {
     description: flags.string({
       description: 'service description (markdown OK)'
     }),
-    settings: flags.string({
-      description: 'service settings (inline or file path)'
+    parameters: flags.string({
+      description: 'service parameters (inline or file path)'
     }),
-    definition: flags.string({
-      description: 'settings input definition (inline or file path)'
+    settings: flags.string({
+      description: 'parameters input settings (inline or file path)'
     })
   }
 
@@ -38,8 +38,8 @@ export default class ServiceCreate extends BaseCommand {
       label: flags.label,
       summary: flags.summary,
       description: flags.description,
-      settings: flags.settings,
-      definition: flags.definition
+      parameters: flags.parameters,
+      settings: flags.settings
     })
 
     ux.success(`service ${flags.id} updated`)

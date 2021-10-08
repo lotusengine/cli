@@ -18,11 +18,11 @@ export default class ServiceCreate extends BaseCommand {
     description: flags.string({
       description: 'service description (markdown OK)'
     }),
-    settings: flags.string({
-      description: 'service settings as JSON string'
+    parameters: flags.string({
+      description: 'service parameters as JSON string'
     }),
-    definition: flags.string({
-      description: 'settings input definition as JSON string'
+    settings: flags.string({
+      description: 'parameters input settings as JSON string'
     })
   }
 
@@ -33,8 +33,8 @@ export default class ServiceCreate extends BaseCommand {
       label: flags.label,
       summary: flags.summary,
       description: flags.description,
-      settings: flags.settings,
-      definition: flags.definition
+      parameters: flags.parameters,
+      settings: flags.settings
     })
 
     ux.success(`service ${result.id} created`)
